@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-profile">
+                    <div class="avatar gradient-avatar">
+                        <i class="fas fa-robot"></i>
+                        <div class="status-indicator online"></div>
+                    </div>
+                    <div class="user-info">
+                        <h3>AI Assistant Pro</h3>
+                        <span class="status">
+                            <i class="fas fa-circle status-dot"></i>
+                            Available for chat
+                        </span>
+                    </div>
+                </div>
+                <!-- Sidebar actions moved to header -->
+            </div>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search conversations..." id="searchInput">
+                    <button class="search-clear" id="searchClear" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-history">
+                <div class="history-header">
+                    <h4>Recent Chats</h4>
+                    <div class="history-actions">
+                        <button class="history-action-btn tooltip" id="clearAllBtn" data-tooltip="Clear All">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- Chat history items will be added here -->
+                </div>
+                <div class="history-empty" id="historyEmpty" style="display: none;">
+                    <i class="fas fa-comments"></i>
+                    <p>No conversations yet</p>
+                    <span>Start a new chat to begin</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="main-chat">
+            <div class="chat-header">
+                <div class="chat-info">
+                    <div class="chat-avatar gradient-avatar">
+                        <i class="fas fa-robot"></i>
+                        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="chat-details">
+                        <h3 id="currentChatTitle">AI Assistant Pro</h3>
+                        <span class="chat-status" id="chatStatus">
+                            <i class="fas fa-circle status-dot"></i>
+                            Online • Horizon Beta Model
+                        </span>
+                        <span class="message-count" id="messageCount">0 messages</span>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-action-btn tooltip" id="newChatBtn" data-tooltip="New Chat">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="chat-action-btn tooltip" id="settingsBtn" data-tooltip="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="chat-action-btn tooltip" id="exportChatBtn" data-tooltip="Export Chat">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message">
+                    <div class="welcome-avatar gradient-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="welcome-content">
+                        <h3>Welcome to AI Assistant Pro! 🚀</h3>
+                        <p>I'm your advanced AI companion, powered by cutting-edge language models. I can help you with:</p>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-code"></i>
+                                <span>Code & Programming</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-pen-fancy"></i>
+                                <span>Creative Writing</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Problem Solving</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-language"></i>
+                                <span>Language Translation</span>
+                            </div>
+                        </div>
+                        <p class="welcome-cta">What would you like to explore today?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <button class="attach-btn tooltip" id="attachBtn" data-tooltip="Attach File">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <div class="input-field">
+                        <textarea id="messageInput" placeholder="Type your message here..." rows="1" maxlength="2000"></textarea>
+                        <div class="input-actions">
+                            <button class="voice-btn tooltip" id="voiceBtn" data-tooltip="Voice Input">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="emoji-btn tooltip" id="emojiBtn" data-tooltip="Add Emoji">
+                                <i class="fas fa-smile"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="send-btn" id="sendBtn" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <div class="input-info">
+                        <span class="model-info">
+                            <i class="fas fa-brain"></i>
+                            <span id="currentModel">Horizon Beta</span>
+                        </span>
+                        <span class="char-count" id="charCount">0/2000</span>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action tooltip" data-tooltip="Ask about coding">
+                            <i class="fas fa-code"></i>
+                        </button>
+                        <button class="quick-action tooltip" data-tooltip="Creative writing">
+                            <i class="fas fa-pen-fancy"></i>
+                        </button>
+                        <button class="quick-action tooltip" data-tooltip="Explain something">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <button class="quick-action tooltip" data-tooltip="Translate text">
+                            <i class="fas fa-language"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Enhanced Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal enhanced-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-cog"></i>
+                    <h3>Settings</h3>
+                </div>
+                <button class="close-btn" id="closeSettingsBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="general">
+                        <i class="fas fa-sliders-h"></i>
+                        General
+                    </button>
+                    <button class="tab-btn" data-tab="appearance">
+                        <i class="fas fa-palette"></i>
+                        Appearance
+                    </button>
+                    <button class="tab-btn" data-tab="advanced">
+                        <i class="fas fa-cogs"></i>
+                        Advanced
+                    </button>
+                </div>
+                
+                <div class="tab-content active" id="general-tab">
+                    <div class="setting-group">
+                        <label for="modelSelect">
+                            <i class="fas fa-brain"></i>
+                            AI Model
+                        </label>
+                        <select id="modelSelect">
+                            <option value="openrouter/horizon-beta">🆓 Horizon Beta (Free)</option>
+                            <option value="anthropic/claude-3-haiku">⚡ Claude 3 Haiku</option>
+                            <option value="anthropic/claude-3-sonnet">🧠 Claude 3 Sonnet</option>
+                            <option value="openai/gpt-3.5-turbo">🚀 GPT-3.5 Turbo</option>
+                            <option value="openai/gpt-4">💎 GPT-4</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="temperatureSlider">
+                            <i class="fas fa-thermometer-half"></i>
+                            Creativity Level
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="temperatureSlider" min="0" max="1" step="0.1" value="0.7">
+                            <div class="slider-labels">
+                                <span>Focused</span>
+                                <span>Balanced</span>
+                                <span>Creative</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="appearance-tab">
+                    <div class="setting-group">
+                        <label for="themeSelect">
+                            <i class="fas fa-moon"></i>
+                            Theme
+                        </label>
+                        <div class="theme-options">
+                            <div class="theme-option" data-theme="dark">
+                                <div class="theme-preview dark-preview"></div>
+                                <span>Dark</span>
+                            </div>
+                            <div class="theme-option" data-theme="light">
+                                <div class="theme-preview light-preview"></div>
+                                <span>Light</span>
+                            </div>
+                            <div class="theme-option" data-theme="auto">
+                                <div class="theme-preview auto-preview"></div>
+                                <span>Auto</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-text-height"></i>
+                            Font Size
+                        </label>
+                        <div class="font-size-options">
+                            <button class="font-size-btn" data-size="small">A</button>
+                            <button class="font-size-btn active" data-size="medium">A</button>
+                            <button class="font-size-btn" data-size="large">A</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="advanced-tab">
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-keyboard"></i>
+                            Keyboard Shortcuts
+                        </label>
+                        <div class="shortcuts-list">
+                            <div class="shortcut-item">
+                                <span>Send Message</span>
+                                <kbd>Enter</kbd>
+                            </div>
+                            <div class="shortcut-item">
+                                <span>New Line</span>
+                                <kbd>Shift + Enter</kbd>
+                            </div>
+                            <div class="shortcut-item">
+                                <span>New Chat</span>
+                                <kbd>Ctrl + N</kbd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="resetBtn">
+                        <i class="fas fa-undo"></i>
+                        Reset to Default
+                    </button>
+                    <div class="primary-actions">
+                        <button class="btn-secondary" id="cancelBtn">Cancel</button>
+                        <button class="btn-primary" id="saveSettingsBtn">
+                            <i class="fas fa-save"></i>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Upload Modal -->
+    <div class="modal-overlay" id="fileUploadModal">
+        <div class="modal file-upload-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-upload"></i>
+                    <h3>Upload File</h3>
+                </div>
+                <button class="close-btn" id="closeFileUploadBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Drag & Drop Files Here</h4>
+                    <p>or click to browse</p>
+                    <input type="file" id="fileInput" multiple accept=".txt,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+                    <div class="file-types">
+                        <span>Supported: TXT, PDF, DOC, DOCX, Images</span>
+                    </div>
+                </div>
+                <div class="uploaded-files" id="uploadedFiles" style="display: none;">
+                    <h4>Selected Files:</h4>
+                    <div class="file-list" id="fileList"></div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelUploadBtn">Cancel</button>
+                <button class="btn-primary" id="uploadFilesBtn" disabled>
+                    <i class="fas fa-upload"></i>
+                    Upload Files
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Voice Recording Modal -->
+    <div class="modal-overlay" id="voiceModal">
+        <div class="modal voice-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-microphone"></i>
+                    <h3>Voice Input</h3>
+                </div>
+                <button class="close-btn" id="closeVoiceBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="voice-recorder">
+                    <div class="voice-visualizer" id="voiceVisualizer">
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                        <div class="voice-wave"></div>
+                    </div>
+                    <div class="voice-status" id="voiceStatus">Click to start recording</div>
+                    <div class="voice-transcript" id="voiceTranscript" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelVoiceBtn">Cancel</button>
+                <button class="btn-record" id="recordBtn">
+                    <i class="fas fa-microphone"></i>
+                    Start Recording
+                </button>
+                <button class="btn-primary" id="useVoiceBtn" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    Use Text
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tooltip -->
+    <div class="tooltip-container" id="tooltipContainer"></div>
+    
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "name": "ai-assistant-pro",
+  "version": "1.0.0",
+  "description": "A modern, feature-rich AI chatbot application with WhatsApp/iMessage-style bubble chat interface",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build step required - static files ready for deployment'",
+    "deploy": "netlify deploy --prod --dir ."
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "openrouter",
+    "javascript",
+    "html5",
+    "css3",
+    "responsive",
+    "dark-theme",
+    "bubble-chat",
+    "modern-ui"
+  ],
+  "author": "AI Assistant Pro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/ai-assistant-pro.git"
+  },
+  "homepage": "https://your-netlify-url.netlify.app",
+  "bugs": {
+    "url": "https://github.com/username/ai-assistant-pro/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
